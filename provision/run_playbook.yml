@@ -2,4 +2,5 @@
 - hosts: all
   gather_facts: no
   roles:
+    - security-base
     - nginx-container
