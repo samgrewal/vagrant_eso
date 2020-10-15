@@ -1,0 +1,3 @@
+---
+proxy_backend: www.wartsila.com
+proxy_scheme: https
