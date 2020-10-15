@@ -13,3 +13,8 @@
   - name: Run nginx container
     command: docker run -d -p 80:80 nginx
   become: true
+- name: Create default.conf
+  template:
+    src: ../files/default.conf.j2
+    dest: ./default.conf
+    mode: 0644
