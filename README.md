@@ -62,12 +62,12 @@ This role enforces the following configuration:
 This role enforces the following configuration:
 - Uses Jinja2 templating to create an nginx configuration file for a HTTP reverse proxy based on the `proxy_backend` and `proxy_scheme` role variables
 - Installs and runs docker
-	- *NOTE:* Docker commands are run with root privileges because the normal process of adding the `ansible_user_id` to a docker shared group was trivial to be done in an idempotent way. There appears to be an open issue with the ansible `reset_connection` meta  task. See [3]
+	- *NOTE:* Docker commands are run with root privileges here because the normal process of adding the `ansible_user_id` to a docker shared group could not be implemented in an idempotent way trivially. There appears to be an open issue with the ansible `reset_connection` meta task on v2.9. Which would normally facilitate re-logging on the ansible user after group changes. See [3]
 - Builds a docker image called `nginx:eso_proxy` from `nginx:latest` using the pre-templated configuration 
 - Deploys a running instance of `nginx:eso_proxy`
 	- *NOTE:* This is currently implemented with shell commands because the modern ansible modules `docker_image` and `docker_container` require the `docker` python module installed via pip. pip is not installed by default, so I did not want to risk introducing dependency issues in the limited scope of the project. 
 - Once successful, you will be able to use the reverse proxy via a browser on your host machine through `http://localhost:8085`. 
-	- *NOTE:* Top-level requests on the web page that change domain will cause you to bypass the proxy.
+	- *NOTE:* Top-level requests on the web page that change the domain will cause you to bypass the proxy.
 
 ## Next Steps
 
@@ -76,7 +76,7 @@ This role enforces the following configuration:
 	- Use any TLD (.internal, .private) and generate a self-signed certificate. 
 	- Web clients on the host OS will need to resolve the domain in either case through use of the hosts file or DNS.
 - Explore getting the `nginx:eso_proxy` container to run without root privileges. 
-- Explore an efficient way of installing the `docker` pip module which will enable the modern `docker_image` and `docker_container` ansible modules.
+- Explore an efficient way of installing the `docker` python module which will enable the modern `docker_image` and `docker_container` ansible modules.
 
 ## References
 - [1] https://sloopstash.com/blog/how-to-build-vm-on-windows-10-using-virtualbox-vagrant-git-bash.html
