@@ -1,6 +1,6 @@
 # vagrant_eso
 
-This repo contains a Vagrant file + dependencies that provisions a Centos 7 guest VM as a dockerized reverse proxy to a user-specified resource.
+This repo contains a Vagrant file + dependencies that provisions a Centos 7 guest VM as a dockerized HTTP reverse proxy to a user-specified resource.
 
 The Vagrantfile forwards ports `:22` and `:80` from the guest OS and binds them to `:2222` and `:8085` on the loopback interface of the host OS, so they are not publicly reachable. 
 
@@ -17,7 +17,7 @@ $ curl -sI http://localhost:8085
 
 This project has been validated on a Windows 10 Host with Vagrant 2.2.10 and Virtualbox 6.1. 
 
-The following tutorials are excellent for configuring the Windows 10 host. See [1] [2]
+The following tutorials are excellent for installing GitBash, Vagrant, and Varnish on Windows 10. See [1] [2]
 
 Of note, you will likely have to disable a number of BIOS features such as SecureBoot and Windows features that use VT-x to get Virtualbox 6.1 to work. Review these if you see a kernel panic on VM boot. See [4]
 
@@ -76,7 +76,7 @@ This role enforces the following configuration:
 	- Use any TLD (.internal, .private) and generate a self-signed certificate. 
 	- Web clients on the host OS will need to resolve the domain in either case through use of the hosts file or DNS.
 - Explore getting the `nginx:eso_proxy` container to run without root privileges. 
-- Explore an efficient way of installing the `docker` python module which will enable the modern `docker_image` and `docker_container` ansible modules.
+- Explore an efficient way of installing the `docker` python module which will enable the modern `docker_image` and `docker_container` ansible modules for a more idempotent deployment.
 
 ## References
 - [1] https://sloopstash.com/blog/how-to-build-vm-on-windows-10-using-virtualbox-vagrant-git-bash.html
