@@ -1,0 +1,15 @@
+---
+- name: setup docker
+  block:
+  - name: Install docker
+    yum:
+      name: docker
+      state: latest
+  - name: Start & enable docker
+    systemd:
+      name: docker
+      state: started
+      enabled: true
+  - name: Run nginx container
+    command: docker run -d -p 80:80 nginx
+  become: true
