@@ -1,5 +1,10 @@
 ---
-- name: setup docker
+- name: Create default.conf 
+  template:
+    src: ../files/default.conf.j2
+    dest: roles/nginx-container/files/default.conf
+    mode: 0644
+- name: setup docker # See README for why all docker commands are run as root
   block:
   - name: Install docker
     yum:
@@ -10,11 +15,15 @@
       name: docker
       state: started
       enabled: true
-  - name: Run nginx container
-    command: docker run -d -p 80:80 nginx
+  - name: Gather all running docker containers # See README for why docker_container and docker_image modules weren't used for these steps
+    command: docker ps -a -q
+    register: docker_ps_output
+  - name: Kill all running docker containers 
+    shell: "docker rm -f {{ item }}"
+    when: docker_ps_output.stdout
+    with_items: "{{ docker_ps_output.stdout_lines }}"
+  - name: Build image
+    command: "docker build -t nginx:eso_proxy roles/nginx-container/files"
+  - name: Run image
+    command: "docker run -d -p 80:80 nginx:eso_proxy"
   become: true
-- name: Create default.conf
-  template:
-    src: ../files/default.conf.j2
-    dest: ./default.conf
-    mode: 0644
