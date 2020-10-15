@@ -1,3 +1,59 @@
 ---
-- name: hello world
-  command: echo hello world
+- block:
+    - name: Update all packages
+      yum:
+        name: '*'
+        state: latest
+    - name: Disable unnecessary network services; rpcbind-service
+      systemd: 
+        name: rpcbind.service
+        masked: true
+        state: stopped
+    - name: Disable unecessary network services; rpcbind-socket
+      systemd: 
+        name: rpcbind.socket
+        masked: true
+        state: stopped
+    - name: Disable unnecessary network services; postfix
+      systemd: 
+        name: postfix.service
+        masked: true
+        state: stopped
+    - name: Disable root login
+      lineinfile: 
+        path: /etc/ssh/sshd_config
+        regexp: '^PermitRootLogin'
+        line: 'PermitRootLogin no'
+        state: present
+    - name: Disable password auth
+      lineinfile: 
+        path: /etc/ssh/sshd_config
+        regexp: '^PasswordAuthentication'
+        line: 'PasswordAuthentication no'
+        state: present
+    - name: Disable PAM
+      lineinfile: 
+        path: /etc/ssh/sshd_config
+        regexp: '^UsePAM'
+        line: 'UsePAM no'
+        state: present
+    - name: Reload sshd
+      systemd: 
+        name: sshd
+        state: reloaded
+    - name: Whitelist ssh in firewalld
+      firewalld: 
+        service: ssh
+        state: enabled
+        permanent: true
+    - name: Whitelist http in firewalld
+      firewalld: 
+        service: http
+        state: enabled
+        permanent: true
+    - name: Start & enable firewalld 
+      systemd: 
+        name: firewalld
+        state: started
+        enabled: yes
+  become: true
