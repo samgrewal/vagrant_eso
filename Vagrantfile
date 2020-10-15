@@ -3,7 +3,10 @@ Vagrant.configure("2") do |hello|
   hello.vm.network "forwarded_port", guest: 22, host: 2225
   hello.vm.network "forwarded_port", guest: 80, host: 8085
 
-  hello.vm.provider :virtualbox do |vb|
-    vb.gui = true
+  # use default synced folder . -> /vagrant
+  hello.vm.provision "ansible_local" do |ansible|
+    ansible.playbook = "/vagrant/provision/run_playbook.yml"
+    ansible.verbose = true
+    ansible.install = true
   end
 end
