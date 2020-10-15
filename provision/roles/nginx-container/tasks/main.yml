@@ -13,7 +13,7 @@
   - name: Start & enable docker
     systemd:
       name: docker
-      state: started
+      state: restarted
       enabled: true
   - name: Gather all running docker containers # See README for why docker_container and docker_image modules weren't used for these steps
     command: docker ps -a -q
