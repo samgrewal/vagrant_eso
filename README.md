@@ -74,7 +74,7 @@ This role enforces the following configuration:
 - Uses Jinja2 templating to create an nginx configuration file for a HTTP reverse proxy based on the `proxy_backend` and `proxy_scheme` role variables
 - Installs and runs docker
 	- *NOTE:* Docker commands are run with root privileges here because the normal process of adding the `ansible_user_id` to a docker shared group could not be implemented in an idempotent way trivially. There appears to be an open issue with the ansible `reset_connection` meta task on v2.9. Which would normally facilitate re-logging on the ansible user after group changes. See [3]. Also, killing the ansible connection from inside the guest OS and asynchronously polling for ansible to reestablish the connection was not succesful. I decided to use root privileges for now an add it to the project "backlog".
-- Builds a docker image called `nginx:eso_proxy` from `nginx:latest` using the pre-templated configuration 
+- Builds a docker image called `nginx:eso_proxy` from `nginx:alpine` using the pre-templated configuration 
 - Deploys a running instance of `nginx:eso_proxy`
 	- *NOTE:* This is currently implemented with shell commands because the modern ansible modules `docker_image` and `docker_container` require the `docker` python module installed via pip. pip is not installed by default, so I did not want to risk introducing and debugging dependency issues in the limited scope of this project. 
 - Once successful, you will be able to use the reverse proxy via a browser on your host machine through `http://localhost:8085`. 
