@@ -20,7 +20,7 @@ Alternatively, without git credentials or cloning:
 ```bash
 $ curl -sLO https://github.com/samgrewal/vagrant_eso/archive/1.1.tar.gz
 $ tar xf 1.1.tar.gz
-$ cd vagrant_eso1.0
+$ cd vagrant_eso-1.1
 $ vagrant up
 $ curl -sI http://localhost:8085
 ```
