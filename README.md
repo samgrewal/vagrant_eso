@@ -1,4 +1,5 @@
 # vagrant_eso
+Post submittal changes= nginx:latest -> nginx:alpine (tag 1.0 -> 1.1)
 
 ## TL;DR
 
@@ -17,8 +18,8 @@ To launch the VM, clone the repo, install dependencies, and execute `vagrant up`
 
 Alternatively, without git credentials or cloning:
 ```bash
-$ curl -sLO https://github.com/samgrewal/vagrant_eso/archive/1.0.tar.gz
-$ tar xf 1.0.tar.gz
+$ curl -sLO https://github.com/samgrewal/vagrant_eso/archive/1.1.tar.gz
+$ tar xf 1.1.tar.gz
 $ cd vagrant_eso1.0
 $ vagrant up
 $ curl -sI http://localhost:8085
