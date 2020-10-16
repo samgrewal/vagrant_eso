@@ -1,14 +1,25 @@
 # vagrant_eso
 
-This repo contains a Vagrant file + dependencies that provisions a Centos 7 guest VM as a dockerized HTTP reverse proxy to a user-specified resource.
-
-The Vagrantfile forwards ports `:22` and `:80` from the guest OS and binds them to `:2222` and `:8085` on the loopback interface of the host OS, so they are not publicly reachable. 
-
 ## TL;DR
 
 ```bash
 $ git clone git@github.com:samgrewal/vagrant_eso.git
 $ cd vagrant_eso
+$ vagrant up
+$ curl -sI http://localhost:8085
+```
+
+This repo contains a Vagrant file + dependencies that provisions a Centos 7 guest VM as a dockerized HTTP reverse proxy to a user-specified resource.
+
+The Vagrantfile forwards ports `:22` and `:80` from the guest OS and binds them to `:2222` and `:8085` on the loopback interface of the host OS, so they are not publicly reachable. 
+
+To launch the VM, clone the repo, install dependencies, and execute `vagrant up`.
+
+Alternatively, without git credentials or cloning:
+```bash
+$ curl -LOs https://github.com/samgrewal/vagrant_eso/archive/1.0.tar.gz
+$ tar xf 1.0.tar.gz
+$ cd vagrant_eso1.0
 $ vagrant up
 $ curl -sI http://localhost:8085
 ```
@@ -65,9 +76,9 @@ This role enforces the following configuration:
 	- *NOTE:* Docker commands are run with root privileges here because the normal process of adding the `ansible_user_id` to a docker shared group could not be implemented in an idempotent way trivially. There appears to be an open issue with the ansible `reset_connection` meta task on v2.9. Which would normally facilitate re-logging on the ansible user after group changes. See [3]
 - Builds a docker image called `nginx:eso_proxy` from `nginx:latest` using the pre-templated configuration 
 - Deploys a running instance of `nginx:eso_proxy`
-	- *NOTE:* This is currently implemented with shell commands because the modern ansible modules `docker_image` and `docker_container` require the `docker` python module installed via pip. pip is not installed by default, so I did not want to risk introducing dependency issues in the limited scope of the project. 
+	- *NOTE:* This is currently implemented with shell commands because the modern ansible modules `docker_image` and `docker_container` require the `docker` python module installed via pip. pip is not installed by default, so I did not want to risk introducing and debugging dependency issues in the limited scope of the project. 
 - Once successful, you will be able to use the reverse proxy via a browser on your host machine through `http://localhost:8085`. 
-	- *NOTE:* Top-level requests on the web page that change the domain will cause you to bypass the proxy.
+	- *NOTE:* Issuing top-level requests on the web page that change the domain will cause you to bypass the proxy.
 
 ## Next Steps
 
