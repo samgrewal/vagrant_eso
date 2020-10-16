@@ -8,7 +8,6 @@ $ cd vagrant_eso
 $ vagrant up
 $ curl -sI http://localhost:8085
 ```
--
 
 This repo contains a Vagrant file + dependencies that provisions a Centos 7 guest VM in Virtualbox as a dockerized HTTP reverse proxy.
 
